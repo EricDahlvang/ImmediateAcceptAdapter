@@ -1,0 +1,45 @@
+[import](common.lg)
+
+# SendActivity_Greeting()
+[Activity
+    Text = ${SendActivity_Greeting_text()}
+]
+
+# SendActivity_Greeting_text()
+- Welcome to your bot.
+
+# SendActivity_DidNotUnderstand()
+[Activity
+    Text = ${SendActivity_DidNotUnderstand_text()}
+]
+
+# SendActivity_DidNotUnderstand_text()
+- Sorry, I didn't get that.
+# NumberInput_Prompt_9oHHpi()
+[Activity
+    Text = ${NumberInput_Prompt_9oHHpi_text()}
+]
+
+# NumberInput_Prompt_9oHHpi_text()
+- How many seconds should this thread sleep?
+# SendActivity_rhU6LP()
+[Activity
+    Text = ${SendActivity_rhU6LP_text()}
+]
+
+# SendActivity_rhU6LP_text()
+- Already sleeping...
+# SendActivity_PqjyWv()
+[Activity
+    Text = ${SendActivity_PqjyWv_text()}
+]
+
+# SendActivity_PqjyWv_text()
+- Send 'sleep' to trigger the Sleep action.
+# SendActivity_x8LhW5()
+[Activity
+    Text = ${SendActivity_x8LhW5_text()}
+]
+
+# SendActivity_x8LhW5_text()
+- 'sleep' is the only command this bot understands.

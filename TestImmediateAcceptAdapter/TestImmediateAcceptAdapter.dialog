@@ -1,0 +1,135 @@
+{
+  "$kind": "Microsoft.AdaptiveDialog",
+  "$designer": {
+    "name": "TestImmediateAcceptAdapter",
+    "description": "",
+    "id": "A79tBe"
+  },
+  "autoEndDialog": true,
+  "defaultResultProperty": "dialog.result",
+  "triggers": [
+    {
+      "$kind": "Microsoft.OnConversationUpdateActivity",
+      "$designer": {
+        "id": "376720"
+      },
+      "actions": [
+        {
+          "$kind": "Microsoft.Foreach",
+          "$designer": {
+            "id": "518944",
+            "name": "Loop: for each item"
+          },
+          "itemsProperty": "turn.Activity.membersAdded",
+          "actions": [
+            {
+              "$kind": "Microsoft.IfCondition",
+              "$designer": {
+                "id": "641773",
+                "name": "Branch: if/else"
+              },
+              "condition": "string(dialog.foreach.value.id) != string(turn.Activity.Recipient.id)",
+              "actions": [
+                {
+                  "$kind": "Microsoft.SendActivity",
+                  "$designer": {
+                    "id": "859266",
+                    "name": "Send a response"
+                  },
+                  "activity": "${SendActivity_Greeting()}"
+                },
+                {
+                  "$kind": "Microsoft.SendActivity",
+                  "$designer": {
+                    "id": "PqjyWv"
+                  },
+                  "activity": "${SendActivity_PqjyWv()}"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "$kind": "Microsoft.OnUnknownIntent",
+      "$designer": {
+        "id": "mb2n1u"
+      },
+      "actions": [
+        {
+          "$kind": "Microsoft.SendActivity",
+          "$designer": {
+            "id": "kMjqz1"
+          },
+          "activity": "${SendActivity_DidNotUnderstand()}"
+        },
+        {
+          "$kind": "Microsoft.SendActivity",
+          "$designer": {
+            "id": "x8LhW5"
+          },
+          "activity": "${SendActivity_x8LhW5()}"
+        }
+      ]
+    },
+    {
+      "$kind": "Microsoft.OnActivity",
+      "$designer": {
+        "id": "TUOD49",
+        "name": "Sleep"
+      },
+      "condition": "=turn.activity.text == \"sleep\"",
+      "type": "message",
+      "actions": [
+        {
+          "$kind": "Microsoft.IfCondition",
+          "$designer": {
+            "id": "deva68"
+          },
+          "condition": "=bool(conversation.conversationIsSleeping) == true",
+          "actions": [
+            {
+              "$kind": "Microsoft.SendActivity",
+              "$designer": {
+                "id": "rhU6LP"
+              },
+              "activity": "${SendActivity_rhU6LP()}"
+            },
+            {
+              "$kind": "Microsoft.EndDialog",
+              "$designer": {
+                "id": "9nXRSM"
+              }
+            }
+          ]
+        },
+        {
+          "$kind": "Microsoft.NumberInput",
+          "$designer": {
+            "id": "9oHHpi"
+          },
+          "defaultLocale": "en-us",
+          "disabled": false,
+          "maxTurnCount": 3,
+          "alwaysPrompt": true,
+          "allowInterruptions": false,
+          "unrecognizedPrompt": "",
+          "invalidPrompt": "",
+          "prompt": "${NumberInput_Prompt_9oHHpi()}",
+          "property": "conversation.sleepTime"
+        },
+        {
+          "$kind": "SleepAction",
+          "$designer": {
+            "id": "2ISwMu"
+          },
+          "secondsToSleep": "=conversation.sleepTime"
+        }
+      ]
+    }
+  ],
+  "generator": "TestImmediateAcceptAdapter.lg",
+  "id": "TestImmediateAcceptAdapter",
+  "recognizer": "TestImmediateAcceptAdapter.lu.qna"
+}

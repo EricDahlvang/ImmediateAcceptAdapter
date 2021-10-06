@@ -1,0 +1,16 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/botframework-sdk/master/schemas/component/component.schema",
+  "$role": "implements(Microsoft.IDialog)",
+  "title": "Custom Sleep Action",
+  "description": "This dialog will sleep for the defined number of seconds before ending.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "secondsToSleep": {
+      "$ref": "schema:#/definitions/integerExpression",
+      "title": "Seconds To Sleep",
+      "description": "Expression or positive integer defining the seconds to sleep."
+    }
+  },
+  "required": [ "secondsToSleep" ]
+}

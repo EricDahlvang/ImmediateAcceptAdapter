@@ -88,6 +88,8 @@ namespace TestImmediateAcceptAdapter
                     
                     if (activity.Type == ActivityTypes.Invoke || activity.DeliveryMode == DeliveryModes.ExpectReplies)
                     {
+                        request.Body.Seek(0, SeekOrigin.Begin);
+                        
                         // NOTE: Invoke and ExpectReplies cannot be performed async, the response must be written before the calling thread is released.
                         await base.ProcessAsync(httpRequest, httpResponse, bot, cancellationToken);
                     }

@@ -7,6 +7,7 @@ using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Io;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
@@ -88,10 +89,14 @@ namespace TestImmediateAcceptAdapter
                     
                     if (activity.Type == ActivityTypes.Invoke || activity.DeliveryMode == DeliveryModes.ExpectReplies)
                     {
-                        request.Body.Seek(0, SeekOrigin.Begin);
-                        
-                        // NOTE: Invoke and ExpectReplies cannot be performed async, the response must be written before the calling thread is released.
-                        await base.ProcessAsync(httpRequest, httpResponse, bot, cancellationToken);
+                        // Grab the auth header from the inbound http request
+                        var authHeader = httpRequest.Headers["Authorization"];
+
+                        // Process the inbound activity with the bot
+                        var invokeResponse = await ProcessActivityAsync(authHeader, activity, bot.OnTurnAsync, cancellationToken).ConfigureAwait(false);
+
+                        // Write the response, potentially serializing the InvokeResponse
+                        await HttpHelper.WriteResponseAsync(httpResponse, invokeResponse).ConfigureAwait(false);
                     }
                     else
                     {

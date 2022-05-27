@@ -85,18 +85,21 @@ namespace TestImmediateAcceptAdapter
                         httpResponse.StatusCode = (int)HttpStatusCode.BadRequest;
                         return;
                     }
+                    
                     if (activity.Type == ActivityTypes.Invoke || activity.DeliveryMode == DeliveryModes.ExpectReplies)
                     {
                         // NOTE: Invoke and ExpectReplies cannot be performed async, the response must be written before the calling thread is released.
                         await base.ProcessAsync(httpRequest, httpResponse, bot, cancellationToken);
                     }
+                    else
+                    {
+                        // Grab the auth header from the inbound http request
+                        var authHeader = httpRequest.Headers["Authorization"];
+                        var authenticateRequestResult = await BotFrameworkAuthentication.AuthenticateRequestAsync(activity, authHeader, cancellationToken).ConfigureAwait(false);
 
-                    // Grab the auth header from the inbound http request
-                    var authHeader = httpRequest.Headers["Authorization"];
-                    var authenticateRequestResult = await BotFrameworkAuthentication.AuthenticateRequestAsync(activity, authHeader, cancellationToken).ConfigureAwait(false);
-
-                    // Queue the activity to be processed by the ActivityBackgroundService
-                    _activityTaskQueue.QueueBackgroundActivity(authenticateRequestResult, activity);
+                        // Queue the activity to be processed by the ActivityBackgroundService
+                        _activityTaskQueue.QueueBackgroundActivity(authenticateRequestResult, activity);
+                    }
 
                     // Activity has been queued to process, so return Ok immediately
                     httpResponse.StatusCode = (int)HttpStatusCode.OK;
